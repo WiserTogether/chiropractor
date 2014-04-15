@@ -31,7 +31,9 @@ define(function(require) {
             if (model) {
                 id = model.fieldId(fieldName);
                 //console.log(model);
-                value = model.get(field.id);
+                if (field) {
+                    value = model.get(field.id);
+                }
             }
 
             _.defaults(opts, {
