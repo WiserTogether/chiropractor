@@ -1579,7 +1579,7 @@
   return Backbone;
 }));
 
-// backbone-subroute.js v0.4.1
+// backbone-subroute.js v0.4.2
 //
 // Copyright (C) 2012 Dave Cadwallader, Model N, Inc.  
 // Distributed under the MIT License
@@ -1587,21 +1587,24 @@
 // Documentation and full license available at:
 // https://github.com/ModelN/backbone.subroute
 
-(function (factory) {
+(function(factory) {
     if (typeof define === 'function' && define.amd) {
         // Register as an AMD module if available...
         define('backbone.subroute',['underscore', 'backbone'], factory);
+    } else if (typeof exports === 'object') {
+        // Next for Node.js, CommonJS, browserify...
+        factory(require('underscore'), require('backbone'));
     } else {
         // Browser globals for the unenlightened...
         factory(_, Backbone);
     }
-}(function(_, Backbone){
+}(function(_, Backbone) {
 
-    Backbone.SubRoute = Backbone.Router.extend( {
-        constructor:function ( prefix, options ) {
+    Backbone.SubRoute = Backbone.Router.extend({
+        constructor: function(prefix, options) {
 
             // each subroute instance should have its own routes hash
-            this.routes = _.clone(this.routes);
+            this.routes = _.clone(this.routes) || {};
 
             // Prefix is optional, set to empty string if not passed
             this.prefix = prefix = prefix || "";
@@ -1609,14 +1612,14 @@
             // SubRoute instances may be instantiated using a prefix with or without a trailing slash.
             // If the prefix does *not* have a trailing slash, we need to insert a slash as a separator
             // between the prefix and the sub-route path for each route that we register with Backbone.        
-            this.separator = ( prefix.slice( -1 ) === "/" ) ? "" : "/";
+            this.separator = (prefix.slice(-1) === "/") ? "" : "/";
 
             // if you want to match "books" and "books/" without creating separate routes, set this
             // option to "true" and the sub-router will automatically create those routes for you.
             this.createTrailingSlashRoutes = options && options.createTrailingSlashRoutes;
 
             // Required to have Backbone set up routes
-            Backbone.Router.prototype.constructor.call( this, options );
+            Backbone.Router.prototype.constructor.call(this, options);
 
             // grab the full URL
             var hash;
@@ -1629,9 +1632,9 @@
             // Trigger the subroute immediately.  this supports the case where 
             // a user directly navigates to a URL with a subroute on the first page load.
             // Check every element, if one matches, break. Prevent multiple matches
-            _.every(this.routes, function(key, route){
+            _.every(this.routes, function(key, route) {
                 // Use the Backbone parser to turn route into regex for matching
-                if(hash.match(Backbone.Router.prototype._routeToRegExp(route))) {
+                if (hash.match(Backbone.Router.prototype._routeToRegExp(route))) {
                     Backbone.history.loadUrl(hash);
                     return false;
                 }
@@ -1642,17 +1645,17 @@
                 this.postInitialize(options);
             }
         },
-        navigate:function ( route, options ) {
-            if ( route.substr( 0, 1 ) != '/' &&
-                    route.indexOf( this.prefix.substr( 0, this.prefix.length - 1 ) ) !== 0 ) {
+        navigate: function(route, options) {
+            if (route.substr(0, 1) != '/' &&
+                route.indexOf(this.prefix.substr(0, this.prefix.length - 1)) !== 0) {
 
                 route = this.prefix +
-                        ( route ? this.separator : "") +
-                        route;
+                    (route ? this.separator : "") +
+                    route;
             }
-            Backbone.Router.prototype.navigate.call( this, route, options );
+            Backbone.Router.prototype.navigate.call(this, route, options);
         },
-        route : function (route, name, callback) {
+        route: function(route, name, callback) {
             // strip off any leading slashes in the sub-route path, 
             // since we already handle inserting them when needed.
             if (route.substr(0) === "/") {
@@ -1660,8 +1663,12 @@
             }
 
             var _route = this.prefix;
-            if (route && route.length > 0)
-                _route += (this.separator + route);
+            if (route && route.length > 0) {
+                if (this.prefix.length > 0)
+                    _route += this.separator;
+
+                _route += route;
+            }
 
             if (this.createTrailingSlashRoutes) {
                 this.routes[_route + '/'] = name;
@@ -1678,7 +1685,7 @@
             // delegate the creation of the properly-prefixed route to Backbone
             return Backbone.Router.prototype.route.call(this, _route, name, callback);
         }
-    } );
+    });
     return Backbone.SubRoute;
 }));
 
@@ -2378,7 +2385,9 @@ define('chiropractor/views/field',['require','json-ie7','jquery','underscore','h
             if (model) {
                 id = model.fieldId(fieldName);
                 //console.log(model);
-                value = model.get(field.id);
+                if (field) {
+                    value = model.get(field.id);
+                }
             }
 
             _.defaults(opts, {
@@ -2412,26 +2421,26 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2, stack3, foundHelper;
-  buffer += "\n    <td>";
+  buffer += "\r\n    <td>";
   stack1 = depth1.model;
   stack2 = depth0.fieldtype;
   stack3 = {};
   stack3['field'] = depth0;
   foundHelper = helpers.field;
   stack1 = foundHelper ? foundHelper.call(depth0, stack2, stack1, {hash:stack3}) : helperMissing.call(depth0, "field", stack2, stack1, {hash:stack3});
-  buffer += escapeExpression(stack1) + "</td>\n  ";
+  buffer += escapeExpression(stack1) + "</td>\r\n  ";
   return buffer;}
 
   buffer += "<tr class=\"";
   foundHelper = helpers.rowclass;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.rowclass; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n  ";
+  buffer += escapeExpression(stack1) + "\">\r\n  ";
   stack1 = depth0.options;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fields;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.programWithDepth(program1, data, depth0)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</tr>";
+  buffer += "\r\n</tr>";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_row_row', t);
 return t;
@@ -2446,26 +2455,26 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div id=\"chiropractor-error-box\" style=\"color: #a94442;background-color: #f2dede;border-color: #ebccd1;padding: 15px;border: 1px solid transparent;border-radius: 4px;\">\n<div aria-hidden=\"true\" style=\"float:right;\" onClick=\"javascript:var element = document.getElementById('chiropractor-error-box');element.parentNode.removeChild(element);\">&times;</div>\n<div style=\"font-weight:bold\">";
+  buffer += "<div id=\"chiropractor-error-box\" style=\"color: #a94442;background-color: #f2dede;border-color: #ebccd1;padding: 15px;border: 1px solid transparent;border-radius: 4px;\">\r\n<div aria-hidden=\"true\" style=\"float:right;\" onClick=\"javascript:var element = document.getElementById('chiropractor-error-box');element.parentNode.removeChild(element);\">&times;</div>\r\n<div style=\"font-weight:bold\">";
   stack1 = depth0.model;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.errorMessage;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</div>\n<div>Message: ";
+  buffer += escapeExpression(stack1) + "</div>\r\n<div>Message: ";
   stack1 = depth0.model;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.response;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.responseText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</div>\n<div>Status: ";
+  buffer += escapeExpression(stack1) + "</div>\r\n<div>Status: ";
   stack1 = depth0.model;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.response;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.statusText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</div>\n<div>StatusCode: ";
+  buffer += escapeExpression(stack1) + "</div>\r\n<div>StatusCode: ";
   stack1 = depth0.model;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.response;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.status;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</div>\n<div>Url: <a href=\"";
+  buffer += escapeExpression(stack1) + "</div>\r\n<div>Url: <a href=\"";
   stack1 = depth0.model;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.url;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
@@ -2473,7 +2482,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   stack1 = depth0.model;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.url;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></div>\n</div>";
+  buffer += escapeExpression(stack1) + "</a></div>\r\n</div>";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_row_error_messagebox', t);
 return t;
@@ -2602,7 +2611,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n    <label class=\"control-label ";
+  buffer += escapeExpression(stack1) + "\">\r\n    <label class=\"control-label ";
   foundHelper = helpers.labelclass;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.labelclass; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2614,7 +2623,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</label>\n    <div class=\"controls\">\n        <input type=\"text\" placeholder=\"";
+  buffer += escapeExpression(stack1) + "</label>\r\n    <div class=\"controls\">\r\n        <input type=\"text\" placeholder=\"";
   foundHelper = helpers.placeholder;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.placeholder; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2634,15 +2643,15 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   foundHelper = helpers['class'];
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0['class']; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\" />\n        <span class=\"description\">";
+  buffer += escapeExpression(stack1) + "\" />\r\n        <span class=\"description\">";
   foundHelper = helpers.description;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n        <span class=\"help-inline\">";
+  buffer += escapeExpression(stack1) + "</span>\r\n        <span class=\"help-inline\">";
   foundHelper = helpers.help;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.help; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n    </div>\n</div>\n";
+  buffer += escapeExpression(stack1) + "</span>\r\n    </div>\r\n</div>\r\n";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_formfield_text', t);
 return t;
@@ -2661,7 +2670,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n    <label class=\"control-label\" for=\"";
+  buffer += escapeExpression(stack1) + "\">\r\n    <label class=\"control-label\" for=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2669,7 +2678,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</label>\n    <div class=\"controls\">\n        <textarea id=\"";
+  buffer += escapeExpression(stack1) + "</label>\r\n    <div class=\"controls\">\r\n        <textarea id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2681,11 +2690,11 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   foundHelper = helpers.value;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.value; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</textarea>\n        <span class=\"help-inline\">";
+  buffer += escapeExpression(stack1) + "</textarea>\r\n        <span class=\"help-inline\">";
   foundHelper = helpers.help;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.help; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n    </div>\n</div>\n";
+  buffer += escapeExpression(stack1) + "</span>\r\n    </div>\r\n</div>\r\n";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_formfield_textarea', t);
 return t;
@@ -2702,17 +2711,17 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
 function program1(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
-  buffer += "\n                <option value=\"\">";
+  buffer += "\r\n                <option value=\"\">";
   foundHelper = helpers.blank;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.blank; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</option>\n            ";
+  buffer += escapeExpression(stack1) + "</option>\r\n            ";
   return buffer;}
 
 function program3(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2, foundHelper;
-  buffer += "\n                <option value=\"";
+  buffer += "\r\n                <option value=\"";
   foundHelper = helpers.value;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.value; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2726,7 +2735,7 @@ function program3(depth0,data,depth1) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</option>\n            ";
+  buffer += escapeExpression(stack1) + "</option>\r\n            ";
   return buffer;}
 function program4(depth0,data) {
   
@@ -2737,7 +2746,7 @@ function program4(depth0,data) {
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n    <label class=\"control-label ";
+  buffer += escapeExpression(stack1) + "\">\r\n    <label class=\"control-label ";
   foundHelper = helpers.labelclass;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.labelclass; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2749,7 +2758,7 @@ function program4(depth0,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</label>\n    <div class=\"controls\">\n        <select id=\"";
+  buffer += escapeExpression(stack1) + "</label>\r\n    <div class=\"controls\">\r\n        <select id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2757,23 +2766,23 @@ function program4(depth0,data) {
   foundHelper = helpers.name;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n            ";
+  buffer += escapeExpression(stack1) + "\">\r\n            ";
   stack1 = depth0.blank;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            ";
+  buffer += "\r\n            ";
   stack1 = depth0.options;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.programWithDepth(program3, data, depth0)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </select>\n        <span class=\"description\">";
+  buffer += "\r\n        </select>\r\n        <span class=\"description\">";
   foundHelper = helpers.description;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n        <span class=\"help-inline\">";
+  buffer += escapeExpression(stack1) + "</span>\r\n        <span class=\"help-inline\">";
   foundHelper = helpers.help;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.help; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n    </div>\n</div>\n";
+  buffer += escapeExpression(stack1) + "</span>\r\n    </div>\r\n</div>\r\n";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_formfield_select', t);
 return t;
@@ -2790,7 +2799,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
 function program1(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
-  buffer += " \n            <input type=\"checkbox\" id=\"";
+  buffer += " \r\n            <input type=\"checkbox\" id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2806,14 +2815,14 @@ function program1(depth0,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\n        ";
+  buffer += escapeExpression(stack1) + "\r\n        ";
   return buffer;}
 
   buffer += "<div class=\"control-group\" id=\"container-";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n    <label class=\"control-label\" for=\"";
+  buffer += escapeExpression(stack1) + "\">\r\n    <label class=\"control-label\" for=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2821,15 +2830,15 @@ function program1(depth0,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</label>\n    <div class=\"controls\">\n        ";
+  buffer += escapeExpression(stack1) + "</label>\r\n    <div class=\"controls\">\r\n        ";
   stack1 = depth0.options;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        <span class=\"help-inline\">";
+  buffer += "\r\n        <span class=\"help-inline\">";
   foundHelper = helpers.help;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.help; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n    </div>\n</div>\n";
+  buffer += escapeExpression(stack1) + "</span>\r\n    </div>\r\n</div>\r\n";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_formfield_checkbox', t);
 return t;
@@ -2846,7 +2855,7 @@ var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
 function program1(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
-  buffer += " \n            <input type=\"radio\" id=\"";
+  buffer += " \r\n            <input type=\"radio\" id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2862,14 +2871,14 @@ function program1(depth0,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\n        ";
+  buffer += escapeExpression(stack1) + "\r\n        ";
   return buffer;}
 
   buffer += "<div class=\"control-group\" id=\"container-";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">\n    <label class=\"control-label\" for=\"";
+  buffer += escapeExpression(stack1) + "\">\r\n    <label class=\"control-label\" for=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -2877,15 +2886,15 @@ function program1(depth0,data) {
   foundHelper = helpers.label;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.label; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</label>\n    <div class=\"controls\">\n        ";
+  buffer += escapeExpression(stack1) + "</label>\r\n    <div class=\"controls\">\r\n        ";
   stack1 = depth0.options;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        <span class=\"help-inline\">";
+  buffer += "\r\n        <span class=\"help-inline\">";
   foundHelper = helpers.help;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.help; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</span>\n    </div>\n</div>\n";
+  buffer += escapeExpression(stack1) + "</span>\r\n    </div>\r\n</div>\r\n";
   return buffer;});
 Handlebars.registerPartial('chiropractor_views_templates_formfield_radio', t);
 return t;
@@ -3014,7 +3023,7 @@ define('chiropractor/views',['require','./views/base','./views/form','./views/fi
 });
 
 /**
- * @preserve console-shim 1.0.2
+ * @preserve console-shim 1.0.3
  * https://github.com/kayahr/console-shim
  * Copyright (C) 2011 Klaus Reimer <k@ailis.de>
  * Licensed under the MIT license
