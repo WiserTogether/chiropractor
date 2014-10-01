@@ -45,6 +45,7 @@ require(['jquery', 'easyxdm'], function ($, easyXDM) {
                         'https://b.wsrcdn.net.s3.amazonaws.com',
                         'https://cms.wiser-dev.com',
                         'https://cms.wiser-tst.com',
+                        'https://cms.wiser-stg.com',
                         'https://cms.mywiserhealth.com',
                         'https://beta.wiser-dev.com',
                         'https://beta.wiser-tst.com'
