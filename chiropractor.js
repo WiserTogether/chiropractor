@@ -423,6 +423,17 @@
     // triggering a `"change"` event.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
+      // ONLY IF IE8 DO THIS DAVID!!!!
+      // AND THEN MAKE SURE WE DON'T OVERRIDE HEADERS
+      var authHeader;
+      if ($.cookie('arnold_user_auth_token')) {
+        authHeader = $.cookie('arnold_user_auth_token');
+      } else if ($.cookie('anon_user_auth_token')) {
+        authHeader = $.cookie('anon_user_auth_token');
+      } else {
+        authHeader = null;
+      }
+      options['headers'] = {'Authorization': authHeader}
       if (options.parse === void 0) options.parse = true;
       var model = this;
       var success = options.success;
