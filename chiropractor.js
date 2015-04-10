@@ -870,7 +870,28 @@
     // collection when they arrive. If `reset: true` is passed, the response
     // data will be passed through the `reset` method instead of `set`.
     fetch: function(options) {
+      var authHeader,
+          browser = require('chiropractor/browser');
       options = options ? _.clone(options) : {};
+      // Set the Authorization header for IE8 here so that it
+      // is included in every API call
+      if (browser.isOldIE) {
+        if ($.cookie('arnold_user_auth_token')) {
+          authHeader = $.cookie('arnold_user_auth_token');
+        } else if ($.cookie('anon_user_auth_token')) {
+          authHeader = $.cookie('anon_user_auth_token');
+        } else {
+          authHeader = null;
+        }
+        // Only set the auth header if one does not already exist
+        if (!('headers' in options) ||
+            ('headers' in options && !('Authorization' in options.headers) && !('authorization' in options.headers))) {
+          if (authHeader) {
+            options['headers'] = {'Authorization': authHeader}
+          }
+        }
+      }
+
       if (options.parse === void 0) options.parse = true;
       var success = options.success;
       var collection = this;
