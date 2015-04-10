@@ -422,18 +422,28 @@
     // model differs from its current attributes, they will be overridden,
     // triggering a `"change"` event.
     fetch: function(options) {
+      var authHeader,
+          browser = require('chiropractor/browser');
       options = options ? _.clone(options) : {};
-      // ONLY IF IE8 DO THIS DAVID!!!!
-      // AND THEN MAKE SURE WE DON'T OVERRIDE HEADERS
-      var authHeader;
-      if ($.cookie('arnold_user_auth_token')) {
-        authHeader = $.cookie('arnold_user_auth_token');
-      } else if ($.cookie('anon_user_auth_token')) {
-        authHeader = $.cookie('anon_user_auth_token');
-      } else {
-        authHeader = null;
+      // Set the Authorization header for IE8 here so that it
+      // is included in every API call
+      if (browser.isOldIE) {
+        if ($.cookie('arnold_user_auth_token')) {
+          authHeader = $.cookie('arnold_user_auth_token');
+        } else if ($.cookie('anon_user_auth_token')) {
+          authHeader = $.cookie('anon_user_auth_token');
+        } else {
+          authHeader = null;
+        }
+        // Only set the auth header if one does not already exist
+        if (!('headers' in options) ||
+             ('headers' in options && !('Authorization' in options.headers) && !('authorization' in options.headers))) {
+          if (authHeader) {
+            options['headers'] = {'Authorization': authHeader}
+          }
+        }
       }
-      options['headers'] = {'Authorization': authHeader}
+
       if (options.parse === void 0) options.parse = true;
       var model = this;
       var success = options.success;
