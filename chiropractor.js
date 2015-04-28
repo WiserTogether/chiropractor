@@ -875,7 +875,7 @@
       options = options ? _.clone(options) : {};
       // Set the Authorization header for IE8 here so that it
       // is included in every API call
-      if (browser.isOldIE) {
+      if (browser.isIE8or9) {
         if ($.cookie('arnold_user_auth_token')) {
           authHeader = $.cookie('arnold_user_auth_token');
         } else if ($.cookie('anon_user_auth_token')) {
