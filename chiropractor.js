@@ -439,7 +439,7 @@
         if (!('headers' in options) ||
              ('headers' in options && !('Authorization' in options.headers) && !('authorization' in options.headers))) {
           if (authHeader) {
-            options['headers'] = {'Authorization': authHeader}
+            options['headers'] = {'Authorization': authHeader};
           }
         }
       }
@@ -887,7 +887,7 @@
         if (!('headers' in options) ||
             ('headers' in options && !('Authorization' in options.headers) && !('authorization' in options.headers))) {
           if (authHeader) {
-            options['headers'] = {'Authorization': authHeader}
+            options['headers'] = {'Authorization': authHeader};
           }
         }
       }
@@ -2393,7 +2393,7 @@ Handlebars.registerPartial('chiropractor_views_templates_fields_label', t);
 return t;
 });
 /* END_TEMPLATE */
-;
+
 /*global define*/
 define('chiropractor/views/field',['require','json-ie7','jquery','underscore','handlebars','hbs!./templates/fields/label'],function(require) {
     
@@ -2488,7 +2488,7 @@ Handlebars.registerPartial('chiropractor_views_templates_row_row', t);
 return t;
 });
 /* END_TEMPLATE */
-;
+
 
 /* START_TEMPLATE */
 define('hbs!chiropractor/views/templates/row/error_messagebox',['hbs','handlebars'], function( hbs, Handlebars ){ 
@@ -2530,7 +2530,7 @@ Handlebars.registerPartial('chiropractor_views_templates_row_error_messagebox', 
 return t;
 });
 /* END_TEMPLATE */
-;
+
 /*global define*/
 define('chiropractor/views/row',['require','json-ie7','jquery','underscore','handlebars','hbs!./templates/row/row','hbs!./templates/row/error_messagebox'],function(require) {
     
@@ -2699,7 +2699,7 @@ Handlebars.registerPartial('chiropractor_views_templates_formfield_text', t);
 return t;
 });
 /* END_TEMPLATE */
-;
+
 
 /* START_TEMPLATE */
 define('hbs!chiropractor/views/templates/formfield/textarea',['hbs','handlebars'], function( hbs, Handlebars ){ 
@@ -2742,7 +2742,7 @@ Handlebars.registerPartial('chiropractor_views_templates_formfield_textarea', t)
 return t;
 });
 /* END_TEMPLATE */
-;
+
 
 /* START_TEMPLATE */
 define('hbs!chiropractor/views/templates/formfield/select',['hbs','handlebars'], function( hbs, Handlebars ){ 
@@ -2830,7 +2830,7 @@ Handlebars.registerPartial('chiropractor_views_templates_formfield_select', t);
 return t;
 });
 /* END_TEMPLATE */
-;
+
 
 /* START_TEMPLATE */
 define('hbs!chiropractor/views/templates/formfield/checkbox',['hbs','handlebars'], function( hbs, Handlebars ){ 
@@ -2886,7 +2886,7 @@ Handlebars.registerPartial('chiropractor_views_templates_formfield_checkbox', t)
 return t;
 });
 /* END_TEMPLATE */
-;
+
 
 /* START_TEMPLATE */
 define('hbs!chiropractor/views/templates/formfield/radio',['hbs','handlebars'], function( hbs, Handlebars ){ 
@@ -2942,7 +2942,7 @@ Handlebars.registerPartial('chiropractor_views_templates_formfield_radio', t);
 return t;
 });
 /* END_TEMPLATE */
-;
+
 /*global define*/
 define('chiropractor/views/formfield',['require','json-ie7','jquery','underscore','handlebars','../hbs/view','./base','hbs!./templates/formfield/text','hbs!./templates/formfield/textarea','hbs!./templates/formfield/select','hbs!./templates/formfield/checkbox','hbs!./templates/formfield/radio'],function(require) {
     
@@ -3868,7 +3868,7 @@ define('jquery.cors/easyxdm/easyxdm',['require','json2'],function(require) {
             if (!config.isHost) {
                 config.channel = query.xdm_c.replace(/["'<>\\]/g, "");
                 config.secret = query.xdm_s;
-                config.remote = query.xdm_e.replace(/["'<>\\]/g, "");;
+                config.remote = query.xdm_e.replace(/["'<>\\]/g, "");
                 protocol = query.xdm_p;
                 if (config.acl && !checkAcl(config.acl, config.remote)) {
                     throw new Error("Access denied for " + config.remote);
@@ -5926,7 +5926,7 @@ define('jquery.cors/jquery.cors',['require','underscore','jquery','json2','conso
                     connection: undefined,
                     error: undefined,
                     state: "before"
-                }
+                };
             }
             console.log('jquery.cors easyXDM request for ' + options.url + ' using ' + provider_base_url);
 
@@ -5935,7 +5935,7 @@ define('jquery.cors/jquery.cors',['require','underscore','jquery','json2','conso
                     jquery_cors.getConnection(provider_base_url, {
                         'success': function (easyXDM_connection) {
                             function continuation_proxy(results) {
-                                console.log('easyXDM connection for ' + options.url + ' via ' + provider_base_url + ' continuation proxy excecuting')
+                                console.log('easyXDM connection for ' + options.url + ' via ' + provider_base_url + ' continuation proxy excecuting');
                                 completeCallback(results.status,
                                     results.statusText,
                                     results.responses,
@@ -5944,7 +5944,7 @@ define('jquery.cors/jquery.cors',['require','underscore','jquery','json2','conso
                             }
                             originalOptions.context = null;
                             easyXDM_connection.jquery_proxy(originalOptions, continuation_proxy);
-                            console.log('easyXDM connection for ' + options.url + ' via ' + provider_base_url + ' initialized')
+                            console.log('easyXDM connection for ' + options.url + ' via ' + provider_base_url + ' initialized');
                         },
                         'error': function () {
                             console.log('easyXDM connection for ' + provider_base_url + ' failed to initialize');
@@ -6284,7 +6284,7 @@ define('underscore.mixin.deepextend',['require','underscore'],function (require)
  * Main source
  */
 
-;(function(factory) {
+(function(factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD
         define('backbone.deep.model',['underscore', 'backbone'], factory);
@@ -6493,7 +6493,7 @@ define('underscore.mixin.deepextend',['require','underscore'],function (require)
               var alreadyTriggered = {}; // * @restorer
 
               for (var i = 0, l = changes.length; i < l; i++) {
-                var key = changes[i];
+                key = changes[i];
 
                 if (!alreadyTriggered.hasOwnProperty(key) || !alreadyTriggered[key]) { // * @restorer
                   alreadyTriggered[key] = true; // * @restorer
@@ -7263,7 +7263,7 @@ Handlebars.registerPartial('chiropractor_views_templates_error_modelfetch', t);
 return t;
 });
 /* END_TEMPLATE */
-;
+
 /*global define,setTimeout,clearTimeout*/
 define('chiropractor/models',['require','jquery.cors/jquery.cors','backbone','underscore','json-ie7','jquery','./models/auth','backbone.deep.model','backbone.validation','hbs!./views/templates/error/modelfetch','underscore.mixin.deepextend'],function (require) {
   

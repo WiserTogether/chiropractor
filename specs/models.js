@@ -73,7 +73,7 @@ define(function(require) {
                     expect(this.deepmodel.get('user.name.first')).to.eql('Sterling');
 
                 });
-                if ('should get deep attributes which are set after initialize', function() {
+                it('should get deep attributes which are set after initialize', function() {
                     expect(this.deepmodel.get('relations.health-plan-health-plan-year.name')).to.eql('2012');
                 });
                 it('should be able to get deep array of attributes', function () {
