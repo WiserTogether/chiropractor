@@ -6145,13 +6145,13 @@ define('chiropractor/models/auth',['require','backbone','jquery','json-ie7','und
             };
 
             options.beforeSend = function(xhr) {
-                var token = getToken();
-                if (!self.disableAuthToken && token) {
-                    xhr.setRequestHeader(
-                        'Authorization',
-                        token
-                    );
-                }
+                // var token = getToken();
+                // if (!self.disableAuthToken && token) {
+                //     xhr.setRequestHeader(
+                //         'Authorization',
+                //         token
+                //     );
+                // }
 
                 if (beforeSend) {
                     return beforeSend.apply(this, arguments);
