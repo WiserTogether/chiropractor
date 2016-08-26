@@ -32,7 +32,6 @@
     "rjs-build-analysis": "git://github.com/iammerrick/rjs-build-analysis.git#master",
     "karma-requirejs": "0.0.3",
     "karma-growl-reporter": "0.0.2",
-    "phantomjs": "1.9.2-0",
     "karma-phantomjs-launcher": "1.0.1",
     "karma-chrome-launcher": "0.0.2"
   },
