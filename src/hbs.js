@@ -1,8 +1,8 @@
 /*global define*/
 define(function(require) {
-    'use strict';
+  'use strict';
 
-    require('./hbs/view');
-    require('./hbs/ifequal');
-    require('./hbs/log');
+  require('./hbs/view');
+  require('./hbs/ifequal');
+  require('./hbs/log');
 });

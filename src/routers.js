@@ -1,14 +1,14 @@
 /*global define*/
 define(function(require) {
-    'use strict';
+  'use strict';
 
-    var Backbone = require('backbone'),
-        Base;
+  var Backbone = require('backbone'),
+    Base;
 
-    Base = Backbone.Router.extend({
-    });
+  Base = Backbone.Router.extend({
+  });
 
-    return {
-        Base: Base
-    };
+  return {
+    Base: Base
+  };
 });

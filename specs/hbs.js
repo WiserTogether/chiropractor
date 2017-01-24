@@ -1,16 +1,16 @@
 /*global define*/
 define(function(require) {
-    'use strict';
+  'use strict';
 
-    var describe = require('mocha').describe;
+  var describe = require('mocha').describe;
 
-    return function() {
-        describe('view', function() {
-            require('specs/hbs/view')();
-        });
+  return function() {
+    describe('view', function() {
+      require('specs/hbs/view')();
+    });
 
-        describe('ifequal', function() {
-            require('specs/hbs/ifequal')();
-        });
-    };
+    describe('ifequal', function() {
+      require('specs/hbs/ifequal')();
+    });
+  };
 });

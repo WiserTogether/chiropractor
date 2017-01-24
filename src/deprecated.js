@@ -1,6 +1,6 @@
 /*global define*/
 define(function(require) {
-    'use strict';
+  'use strict';
 
-    throw new Error('Use Chiropractor instead.');
+  throw new Error('Use Chiropractor instead.');
 });

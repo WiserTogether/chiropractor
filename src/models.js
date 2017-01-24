@@ -4,7 +4,6 @@ define(function (require) {
 
   require('jquery.cors/jquery.cors');
 
-
   var Backbone = require('backbone'),
     _ = require('underscore'),
     JSON = require('json-ie7'),
@@ -21,7 +20,7 @@ define(function (require) {
 
   // Add Wiser specific settings Issue #31
 
-  if(window && window.Wiser && window.Wiser.ASSETS_BASE_URL) {
+  if (window && window.Wiser && window.Wiser.ASSETS_BASE_URL) {
     ASSETS_BASE_URL = window.Wiser.ASSETS_BASE_URL;
   } else {
     ASSETS_BASE_URL = '';
@@ -32,16 +31,16 @@ define(function (require) {
   Base = BackboneDeepModel.DeepModel.extend({
     errorHandler: function(response) {
       var errorMessage;
-      switch(response.status) {
-        case 0:
-          errorMessage = "The API was unreachable";
-          break;
-        case 503:
-          errorMessage = "There was an Error Communicating with the API";
-          break;
-          default:
+      switch (response.status) {
+      case 0:
+        errorMessage = "The API was unreachable";
+        break;
+      case 503:
+        errorMessage = "There was an Error Communicating with the API";
+        break;
+      default:
       }
-      $('body').before(TemplateError({ url: this.url ,  errorMessage: errorMessage, response: response }));
+      $('body').before(TemplateError({ url: this.url , errorMessage: errorMessage, response: response }));
     },
     successHandler: function(model, response, options) {
     },

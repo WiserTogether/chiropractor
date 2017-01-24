@@ -1,24 +1,21 @@
+/*global process*/
 // Karma configuration
 var args = process.argv.splice(2),
-    ciMode = args.indexOf('--ci') !== -1,
-    devMode = args.indexOf('--dev') !== -1;
-
-
+  ciMode = args.indexOf('--ci') !== -1,
+  devMode = args.indexOf('--dev') !== -1;
 
 module.exports = function(karma) {
-    karma.set({
+  karma.set({
 
         // base path, that will be used to resolve files and exclude
-        basePath: '',
-
+    basePath: '',
 
         // frameworks to use
-        frameworks: ['mocha', 'requirejs'],
-
+    frameworks: ['mocha', 'requirejs'],
 
         // list of files / patterns to load in the browser
-        files: [
-            'specs/karma.js',
+    files: [
+      'specs/karma.js',
 
             {pattern: 'bower_components/**/*.js', included: false},
             {pattern: 'lib/**/*.js', included: false},
@@ -28,45 +25,36 @@ module.exports = function(karma) {
             {pattern: 'specs/**/*.json', included: false},
             {pattern: 'src/**/*.js', included: false},
             {pattern: 'src/**/*.hbs', included: false}
-        ],
-
+    ],
 
         // list of files to exclude
-        exclude: [
-        ],
-
+    exclude: [
+    ],
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-        reporters: ciMode ? ['progress', 'junit'] : ['progress', 'growl'],
+    reporters: ciMode ? ['progress', 'junit'] : ['progress', 'growl'],
 
-
-        junitReporter: {
-            outputFile: 'reports/karma/junit-results.xml',
-            suite: 'karma'
-        },
-
+    junitReporter: {
+      outputFile: 'reports/karma/junit-results.xml',
+      suite: 'karma'
+    },
 
         // web server port
-        port: 7777,
-
+    port: 7777,
 
         // cli runner port
-        runnerPort: 9999,
-
+    runnerPort: 9999,
 
         // enable / disable colors in the output (reporters and logs)
-        colors: true,
-
+    colors: true,
 
         // level of logging
         // possible values: karma.LOG_DISABLE || karma.LOG_ERROR || karma.LOG_WARN || karma.LOG_INFO || karma.LOG_DEBUG
-        logLevel: karma.LOG_INFO,
-
+    logLevel: karma.LOG_INFO,
 
         // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: true,
-
+    autoWatch: true,
 
         // Start these browsers, currently available:
         // - Chrome
@@ -76,23 +64,22 @@ module.exports = function(karma) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: (ciMode ?
-            [
-             'PhantomJS'
-            ] : [
-             'PhantomJS'
-            ]),
-
+    browsers: (ciMode ?
+    [
+      'PhantomJS'
+    ] :
+    [
+      'PhantomJS'
+    ]),
 
         // If browser does not capture in given timeout [ms], kill it
-        captureTimeout: 60000,
-
+    captureTimeout: 60000,
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
-        singleRun: !devMode,
+    singleRun: !devMode,
 
-        preprocessors: {
-        }
-    });
+    preprocessors: {
+    }
+  });
 };

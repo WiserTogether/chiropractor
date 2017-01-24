@@ -4,7 +4,6 @@ define(function (require) {
 
   require('jquery.cors/jquery.cors');
 
-
   var Backbone = require('backbone'),
     _ = require('underscore'),
     Base,
@@ -14,7 +13,7 @@ define(function (require) {
 
   // Add Wiser specific settings Issue #31
 
-  if(window && window.Wiser && window.Wiser.ASSETS_BASE_URL) {
+  if (window && window.Wiser && window.Wiser.ASSETS_BASE_URL) {
     ASSETS_BASE_URL = window.Wiser.ASSETS_BASE_URL;
   } else {
     ASSETS_BASE_URL = '';

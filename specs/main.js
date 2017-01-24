@@ -1,20 +1,20 @@
 /*global define*/
 define(function(require) {
-    'use strict';
+  'use strict';
 
-    var describe = require('mocha').describe;
+  var describe = require('mocha').describe;
 
-    return function() {
-        describe('models', function() {
-            require('specs/models')();
-        });
+  return function() {
+    describe('models', function() {
+      require('specs/models')();
+    });
 
-        describe('views', function() {
-            require('specs/views')();
-        });
+    describe('views', function() {
+      require('specs/views')();
+    });
 
-        describe('hbs', function() {
-            require('specs/hbs')();
-        });
-    };
+    describe('hbs', function() {
+      require('specs/hbs')();
+    });
+  };
 });
