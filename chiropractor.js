@@ -673,7 +673,6 @@
           delete this._byId[model.cid];
           index = this.indexOf(model);
           this.models.splice(index, 1);
-          this.length--;
           if (!options.silent) {
             options.index = index;
             model.trigger('remove', model, this, options);
@@ -741,7 +740,7 @@
 
       // Remove nonexistent models if appropriate.
         if (remove) {
-          for (i = 0, l = this.length; i < l; ++i) {
+          for (i = 0, l = this.models.length; i < l; ++i) {
             if (!modelMap[(model = this.models[i]).cid]) toRemove.push(model);
           }
           if (toRemove.length) this.remove(toRemove, options);
@@ -750,7 +749,6 @@
       // See if sorting is needed, update `length` and splice in new models.
         if (toAdd.length || (order && order.length)) {
           if (sortable) sort = true;
-          this.length += toAdd.length;
           if (at != null) {
             for (i = 0, l = toAdd.length; i < l; i++) {
               this.models.splice(at + i, 0, toAdd[i]);
@@ -797,12 +795,12 @@
 
     // Add a model to the end of the collection.
       push: function(model, options) {
-        return this.add(model, _.extend({at: this.length}, options));
+        return this.add(model, _.extend({at: this.models.length}, options));
       },
 
     // Remove a model from the end of the collection.
       pop: function(options) {
-        var model = this.at(this.length - 1);
+        var model = this.at(this.models.length - 1);
         this.remove(model, options);
         return model;
       },
@@ -946,7 +944,6 @@
     // Private method to reset all internal state. Called when the collection
     // is first initialized or reset.
       _reset: function() {
-        this.length = 0;
         this.models = [];
         this._byId = {};
       },
